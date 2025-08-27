@@ -1,0 +1,45 @@
+<svg width="128" height="128" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background Circle -->
+  <circle cx="64" cy="64" r="60" fill="url(#gradient1)" stroke="url(#gradient2)" stroke-width="2"/>
+  
+  <!-- Pipeline Flow Lines -->
+  <path d="M20 64 L35 64 L42 50 L52 78 L62 40 L72 85 L82 55 L92 70 L108 64" 
+        stroke="#ffffff" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  
+  <!-- Data Points -->
+  <circle cx="35" cy="64" r="3" fill="#ffffff"/>
+  <circle cx="42" cy="50" r="3" fill="#4CAF50"/>
+  <circle cx="52" cy="78" r="3" fill="#f44336"/>
+  <circle cx="62" cy="40" r="3" fill="#2196F3"/>
+  <circle cx="72" cy="85" r="3" fill="#FF9800"/>
+  <circle cx="82" cy="55" r="3" fill="#9C27B0"/>
+  <circle cx="92" cy="70" r="3" fill="#00BCD4"/>
+  <circle cx="108" cy="64" r="3" fill="#ffffff"/>
+  
+  <!-- AI Symbol -->
+  <g transform="translate(44, 20)">
+    <rect x="0" y="0" width="40" height="24" rx="12" fill="rgba(255,255,255,0.9)"/>
+    <text x="20" y="16" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#1976D2">AI</text>
+  </g>
+  
+  <!-- Gear/Settings Icon -->
+  <g transform="translate(85, 88)">
+    <circle cx="8" cy="8" r="6" fill="none" stroke="#ffffff" stroke-width="2"/>
+    <circle cx="8" cy="8" r="2" fill="#ffffff"/>
+    <path d="M8 2v2M8 12v2M2 8h2M12 8h2M3.86 3.86l1.42 1.42M10.72 10.72l1.42 1.42M3.86 12.14l1.42-1.42M10.72 5.28l1.42-1.42" 
+          stroke="#ffffff" stroke-width="1" stroke-linecap="round"/>
+  </g>
+  
+  <!-- Gradients -->
+  <defs>
+    <linearGradient id="gradient1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1976D2;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#2196F3;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#03DAC6;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="gradient2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0D47A1;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#00695C;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+</svg>

@@ -1,0 +1,350 @@
+# ===========================
+# AutoFlow AI - CI/CD Dashboard
+# .gitignore Configuration
+# ===========================
+
+# ===========================
+# Dependencies & Node Modules
+# ===========================
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+package-lock.json
+yarn.lock
+
+# ===========================
+# Environment Variables & Secrets
+# ===========================
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env.staging
+
+# Sensitive configuration files
+config/secrets.js
+config/production.js
+secrets/
+*.key
+*.pem
+*.p12
+*.pfx
+*.cert
+*.crt
+
+# API Keys and tokens
+api-keys.json
+tokens.json
+credentials.json
+
+# ===========================
+# Build & Distribution
+# ===========================
+build/
+dist/
+out/
+public/build/
+frontend/build/
+backend/dist/
+
+# Production builds
+*.min.js
+*.min.css
+
+# ===========================
+# Database Files
+# ===========================
+*.db
+*.sqlite
+*.sqlite3
+*.db-journal
+backend/data/
+backend/database.db
+database/
+data/
+
+# Database backups
+*.backup
+*.bak
+*.dump
+*.sql.gz
+
+# ===========================
+# Logs & Monitoring
+# ===========================
+logs/
+*.log
+backend/logs/
+frontend/logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Application logs
+app.log
+error.log
+access.log
+combined.log
+
+# PM2 logs
+pm2.log
+pm2-error.log
+
+# ===========================
+# Runtime & Process Files
+# ===========================
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+# Runtime data
+lib-cov/
+coverage/
+nyc_output/
+
+# ===========================
+# Testing & Coverage
+# ===========================
+coverage/
+.nyc_output/
+.coverage/
+junit.xml
+test-results.xml
+
+# Jest
+jest-results.json
+coverage-final.json
+
+# ===========================
+# Operating System Files
+# ===========================
+# macOS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+.AppleDouble
+.LSOverride
+
+# Windows
+ehthumbs.db
+Thumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Linux
+*~
+.fuse_hidden*
+.directory
+.Trash-*
+.nfs*
+
+# ===========================
+# IDE & Editor Files
+# ===========================
+# VS Code
+.vscode/
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# JetBrains IDEs
+.idea/
+*.iws
+*.iml
+*.ipr
+
+# Sublime Text
+*.sublime-workspace
+*.sublime-project
+
+# Vim
+*.swp
+*.swo
+*~
+.netrwhist
+
+# Emacs
+*~
+\#*\#
+/.emacs.desktop
+/.emacs.desktop.lock
+*.elc
+auto-save-list
+tramp
+.\#*
+
+# ===========================
+# Docker & Containers
+# ===========================
+.docker/
+docker-compose.override.yml
+docker-compose.local.yml
+Dockerfile.local
+
+# Docker volumes
+docker-volumes/
+
+# ===========================
+# Cloud & Deployment
+# ===========================
+# Serverless
+.serverless/
+serverless.yml.bak
+
+# Terraform
+*.tfstate
+*.tfstate.*
+.terraform/
+.terraform.lock.hcl
+
+# AWS
+.aws/
+aws-exports.js
+
+# Heroku
+.heroku/
+
+# ===========================
+# Temporary & Cache Files
+# ===========================
+tmp/
+temp/
+.tmp/
+.temp/
+
+# Cache directories
+.cache/
+.parcel-cache/
+.eslintcache
+.stylelintcache
+
+# Optional npm cache directory
+.npm
+
+# Optional REPL history
+.node_repl_history
+
+# Microbundle cache
+.rpt2_cache/
+.rts2_cache_cjs/
+.rts2_cache_es/
+.rts2_cache_umd/
+
+# FuseBox cache
+.fusebox/
+
+# DynamoDB Local files
+.dynamodb/
+
+# TernJS port file
+.tern-port
+
+# ===========================
+# Package Management
+# ===========================
+# Yarn Integrity file
+.yarn-integrity
+
+# Output of 'npm pack'
+*.tgz
+
+# Yarn v2
+.yarn/cache
+.yarn/unplugged
+.yarn/build-state.yml
+.yarn/install-state.gz
+.pnp.*
+
+# ===========================
+# User Uploads & Media
+# ===========================
+uploads/
+public/uploads/
+media/
+assets/temp/
+
+# User generated content
+user-content/
+attachments/
+
+# ===========================
+# Documentation & Reports
+# ===========================
+# Generated documentation
+docs/generated/
+documentation/build/
+
+# Report files
+reports/
+*.report.html
+*.report.json
+
+# ===========================
+# Development Tools
+# ===========================
+# Webpack
+.webpack/
+
+# Rollup
+.rollup.cache/
+
+# SvelteKit
+.svelte-kit/
+
+# Nuxt.js
+.nuxt/
+
+# Next.js
+.next/
+
+# Gatsby
+.cache/
+public/
+
+# Storybook
+storybook-static/
+
+# ===========================
+# Security & Monitoring
+# ===========================
+# Security scan results
+security-report.json
+vulnerability-report.json
+
+# Monitoring data
+monitoring/
+metrics/
+
+# ===========================
+# Custom Project Exclusions
+# ===========================
+# AutoFlow AI specific
+pipeline-data/
+webhook-logs/
+github-cache/
+notification-queue/
+
+# Test data
+test-data/
+mock-data/
+fixtures/temp/
+
+# Backup configurations
+config-backup/
+settings-backup/
+
+# Performance profiling
+profiling/
+*.prof
+*.heapsnapshot
+
+# ===========================
+# END OF .gitignore
+# ===========================
