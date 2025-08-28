@@ -30,9 +30,10 @@
     <img src="https://img.shields.io/badge/📧_Email-Notifications-blue?style=flat-square" alt="Email"/>
     <img src="https://img.shields.io/badge/📊_Interactive-Dashboards-purple?style=flat-square" alt="Dashboards"/>
     <img src="https://img.shields.io/badge/🎨_Material--UI-0081CB?style=flat-square&logo=material-ui" alt="Material-UI"/>
-  </p>
   
-  ![AutoFlow AI Dashboard](screenshots/dashboard-overview.png)
+  
+  ![AutoFlow AI Dashboard](</p><img width="1358" height="607" alt="Screenshot 2025-08-27 145713" src="https://github.com/user-attachments/assets/8c217085-9794-4b44-b5ae-fd54aae46745" />
+)
 </div>
 
 ## 🏗️ Architecture Overview
