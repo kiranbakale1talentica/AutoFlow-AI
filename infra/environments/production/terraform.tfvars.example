@@ -1,15 +1,36 @@
-# AWS Region
-aws_region = "us-east-1"
+# =============================================================================
+# PRODUCTION ENVIRONMENT CONFIGURATION
+# =============================================================================
+# Copy this file to terraform.tfvars and update the values as needed
 
-# VPC Configuration
-vpc_cidr = "10.0.0.0/16"
+# Basic Configuration
+project_name = "autoflow-ai"
+environment  = "production"
+aws_region   = "us-east-1"
 
-# EC2 Configuration
-instance_type = "t3.medium"
-key_name      = "your-aws-key-pair-name"
+# Network Configuration  
+vpc_cidr               = "10.0.0.0/16"
+public_subnet_cidrs    = ["10.0.1.0/24", "10.0.2.0/24"]
+private_subnet_cidrs   = ["10.0.10.0/24", "10.0.20.0/24"]
+allowed_ssh_cidrs      = ["0.0.0.0/0"]  # SECURITY: Restrict this to your IP ranges in production
+
+# Compute Configuration
+instance_type       = "t3.medium"
+key_pair_name      = "your-ec2-key-pair-name"  # REQUIRED: Replace with your actual EC2 key pair
+root_volume_size   = 20
 
 # Database Configuration
-db_instance_class = "db.t3.micro"
-db_name          = "autoflow_ai"
-db_username      = "admin"
-db_password      = "your-secure-database-password"
+db_name                 = "autoflow_ai"
+db_username            = "admin"
+db_instance_class      = "db.t3.micro"
+postgres_version       = "15.4"
+allocated_storage      = 20
+max_allocated_storage  = 100
+multi_az              = false  # Set to true for production high availability
+backup_retention_period = 7
+
+# Application Configuration (optional - will be auto-generated if empty)
+session_secret = ""
+
+# Note: Database password is auto-generated securely by Terraform
+# Session secret is auto-generated if not provided above

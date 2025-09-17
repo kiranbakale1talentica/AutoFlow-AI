@@ -1,12 +1,14 @@
-# Compute Module - EC2 Instances and Load Balancer
+# Compute Module - Single EC2 Instance for AutoFlow-AI
+# Simplified architecture without auto-scaling or separate load balancer
 
-data "aws_ami" "ubuntu" {
+# Data source for latest Amazon Linux 2 AMI
+data "aws_ami" "amazon_linux" {
   most_recent = true
-  owners      = ["099720109477"] # Canonical
+  owners      = ["amazon"]
 
   filter {
     name   = "name"
-    values = ["ubuntu/images/hvm-ssd/ubuntu-22.04-amd64-server-*"]
+    values = ["amzn2-ami-hvm-*-x86_64-gp2"]
   }
 
   filter {
@@ -15,105 +17,129 @@ data "aws_ami" "ubuntu" {
   }
 }
 
-resource "aws_launch_template" "main" {
-  name_prefix   = "${var.name_prefix}-"
-  image_id      = data.aws_ami.ubuntu.id
+# IAM role for EC2 instance
+resource "aws_iam_role" "instance_role" {
+  name = "${var.project_name}-${var.environment}-instance-role"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = "sts:AssumeRole"
+        Effect = "Allow"
+        Principal = {
+          Service = "ec2.amazonaws.com"
+        }
+      }
+    ]
+  })
+
+  tags = {
+    Name        = "${var.project_name}-${var.environment}-instance-role"
+    Environment = var.environment
+    Project     = var.project_name
+  }
+}
+
+# IAM role policy for CloudWatch logs and basic EC2 operations
+resource "aws_iam_role_policy" "instance_policy" {
+  name = "${var.project_name}-${var.environment}-instance-policy"
+  role = aws_iam_role.instance_role.id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "logs:CreateLogGroup",
+          "logs:CreateLogStream",
+          "logs:PutLogEvents",
+          "logs:DescribeLogStreams",
+          "logs:DescribeLogGroups"
+        ]
+        Resource = "arn:aws:logs:*:*:*"
+      },
+      {
+        Effect = "Allow"
+        Action = [
+          "ec2:DescribeInstances",
+          "ec2:DescribeTags"
+        ]
+        Resource = "*"
+      }
+    ]
+  })
+}
+
+# IAM instance profile
+resource "aws_iam_instance_profile" "instance_profile" {
+  name = "${var.project_name}-${var.environment}-instance-profile"
+  role = aws_iam_role.instance_role.name
+
+  tags = {
+    Name        = "${var.project_name}-${var.environment}-instance-profile"
+    Environment = var.environment
+    Project     = var.project_name
+  }
+}
+
+# Single EC2 instance for the application
+resource "aws_instance" "main" {
+  ami           = data.aws_ami.amazon_linux.id
   instance_type = var.instance_type
-  key_name      = var.key_name
+  key_name      = var.key_pair_name
 
-  vpc_security_group_ids = var.security_group_ids
+  vpc_security_group_ids      = [var.security_group_id]
+  subnet_id                   = var.subnet_id
+  iam_instance_profile        = aws_iam_instance_profile.instance_profile.name
+  associate_public_ip_address = var.associate_public_ip
 
+  # User data script for application setup
   user_data = base64encode(templatefile("${path.module}/../../scripts/user_data.sh", {
-    db_endpoint = var.db_endpoint
-    db_name     = var.db_name
-    db_username = var.db_username
-    db_password = var.db_password
+    project_name      = var.project_name
+    environment       = var.environment
+    database_url      = var.database_url
+    session_secret    = var.session_secret
+    react_app_api_url = var.react_app_api_url
+    github_repo_url   = "https://github.com/kiranbakale1talentica/AutoFlow-AI.git"
   }))
 
-  tag_specifications {
-    resource_type = "instance"
-    tags = merge(var.tags, {
-      Name = "${var.name_prefix}-instance"
-    })
-  }
-}
+  root_block_device {
+    volume_type           = var.root_volume_type
+    volume_size           = var.root_volume_size
+    encrypted             = true
+    delete_on_termination = true
 
-resource "aws_autoscaling_group" "main" {
-  name                = "${var.name_prefix}-asg"
-  vpc_zone_identifier = var.subnet_ids
-  target_group_arns   = [aws_lb_target_group.main.arn]
-  health_check_type   = "ELB"
-  health_check_grace_period = 300
-
-  min_size         = 1
-  max_size         = 3
-  desired_capacity = 2
-
-  launch_template {
-    id      = aws_launch_template.main.id
-    version = "$Latest"
-  }
-
-  tag {
-    key                 = "Name"
-    value               = "${var.name_prefix}-asg"
-    propagate_at_launch = false
-  }
-
-  dynamic "tag" {
-    for_each = var.tags
-    content {
-      key                 = tag.key
-      value               = tag.value
-      propagate_at_launch = true
+    tags = {
+      Name        = "${var.project_name}-${var.environment}-root-volume"
+      Environment = var.environment
+      Project     = var.project_name
     }
   }
-}
 
-resource "aws_lb" "main" {
-  name               = "${var.name_prefix}-alb"
-  internal           = false
-  load_balancer_type = "application"
-  security_groups    = var.security_group_ids
-  subnets            = var.subnet_ids
-
-  enable_deletion_protection = false
-
-  tags = merge(var.tags, {
-    Name = "${var.name_prefix}-alb"
-  })
-}
-
-resource "aws_lb_target_group" "main" {
-  name     = "${var.name_prefix}-tg"
-  port     = 80
-  protocol = "HTTP"
-  vpc_id   = var.vpc_id
-
-  health_check {
-    enabled             = true
-    healthy_threshold   = 2
-    interval            = 30
-    matcher             = "200"
-    path                = "/"
-    port                = "traffic-port"
-    protocol            = "HTTP"
-    timeout             = 5
-    unhealthy_threshold = 2
+  tags = {
+    Name        = "${var.project_name}-${var.environment}-instance"
+    Environment = var.environment
+    Project     = var.project_name
+    Role        = "Application Server"
   }
 
-  tags = merge(var.tags, {
-    Name = "${var.name_prefix}-tg"
-  })
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
-resource "aws_lb_listener" "main" {
-  load_balancer_arn = aws_lb.main.arn
-  port              = "80"
-  protocol          = "HTTP"
+# Attach EC2 instance to ALB target group for frontend
+resource "aws_lb_target_group_attachment" "frontend" {
+  target_group_arn = var.alb_target_group_frontend_arn
+  target_id        = aws_instance.main.id
+  port             = 3000
+}
 
-  default_action {
-    type             = "forward"
-    target_group_arn = aws_lb_target_group.main.arn
-  }
+# Attach EC2 instance to ALB target group for backend
+resource "aws_lb_target_group_attachment" "backend" {
+  target_group_arn = var.alb_target_group_backend_arn
+  target_id        = aws_instance.main.id
+  port             = 5000
 }
